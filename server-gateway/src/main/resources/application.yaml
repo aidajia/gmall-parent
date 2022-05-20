@@ -1,0 +1,22 @@
+server:
+  port: 80
+
+# 配置请求转发规则
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*" #允许所有ip跨域访问
+            allowedMethods: "*" #允许所有请求方式跨域访问
+            allowedHeaders: "*" #允许任何请求头跨域访问
+            allowCredentials: true #允许携带cookie
+            ## 以上配置完成, 简单跨域复杂跨域都允许
+
+      routes:
+        - id: product_route
+          uri: lb://service-product
+          predicates:
+            - Path=/admin/product/**
