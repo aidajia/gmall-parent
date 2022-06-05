@@ -1,0 +1,17 @@
+server:
+  port: 9000
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+  redis:
+    host: 192.168.136.130
+    password: Lfy123!@!
+
+
+app:
+  threadpool:
+    corePoolSize: 8
+    maximumPoolSize: 16
+    keepAliveTime: 1 #以min为单位
+    queue-size: 5000

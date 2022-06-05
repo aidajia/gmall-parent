@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.product.mapper.CategortViewMapper">
+
+    <resultMap id="BaseResultMap" type="com.atguigu.gmall.product.domain.CategortView">
+            <result property="category1Id" column="category1_id" jdbcType="BIGINT"/>
+            <result property="category1Name" column="category1_name" jdbcType="VARCHAR"/>
+            <result property="category2Id" column="category2_id" jdbcType="BIGINT"/>
+            <result property="category2Name" column="category2_name" jdbcType="VARCHAR"/>
+            <result property="category3Id" column="category3_id" jdbcType="BIGINT"/>
+            <result property="category3Name" column="category3_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        category1_id,category1_name,category2_id,
+        category2_name,category3_id,category3_name
+    </sql>
+</mapper>

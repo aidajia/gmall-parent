@@ -1,0 +1,3 @@
+### 重建布隆
+GET http://localhost/admin/product/rebuild
+

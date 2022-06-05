@@ -1,0 +1,16 @@
+server:
+  port: 10000
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  elasticsearch:
+    rest:
+      uris:
+        - http://192.168.136.130:9200
+#日志级别:从小到达，调到哪个级别就能打印出这个级别以后的所有数据
+#TRACE（追踪）, DEBUG（调试）, INFO（信息）, WARN（警告）, ERROR（错误）, FATAL（崩溃）, OFF（关闭）
+
+logging:
+  level:
+    org.springframework.data.elasticsearch: trace
+    tracer: trace

@@ -1,0 +1,14 @@
+server:
+  port: 11000
+
+spring:
+  profiles:
+    include: sharding
+
+  redis:
+    host: 192.168.136.130
+    password: Lfy123!@!
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0

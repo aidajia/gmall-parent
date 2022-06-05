@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.product.dao.BaseCategory1Dao">
+
+    <resultMap id="CategoryAndChildMap" type="com.atguigu.gmall.model.to.CategoryAndChildTo">
+        <id property="categoryId" column="id"></id>
+        <result property="categoryName" column="name"></result>
+        <collection property="categoryChild" ofType="com.atguigu.gmall.model.to.CategoryAndChildTo">
+            <id property="categoryId" column="c2id"></id>
+            <result property="categoryName" column="c2name"></result>
+            <collection property="categoryChild" ofType="com.atguigu.gmall.model.to.CategoryAndChildTo">
+                <id property="categoryId" column="c3id"></id>
+                <result property="categoryName" column="c3name"></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getAllCategoryWithChilds" resultMap="CategoryAndChildMap">
+        select c1.*,c2.id c2id,c2.name c2name,c3.id c3id,c3.name c3name from base_category1 c1
+        left join base_category2 c2 on c1.id = c2.category1_id
+        left join base_category3 c3 on c2.id = c3.category2_id
+    </select>
+
+    <select id="getSkuCategoryView" resultType="com.atguigu.gmall.model.product.BaseCategoryView">
+        select cv.*
+        from sku_info sku
+                 left join categort_view cv on cv.category3_id = sku.category3_id
+        where sku.id = #{skuId}
+    </select>
+</mapper>
