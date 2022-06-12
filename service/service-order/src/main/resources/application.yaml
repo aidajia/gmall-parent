@@ -1,0 +1,138 @@
+server:
+  port: 13000
+
+spring:
+#  profiles:
+#    include: sharding
+  shardingsphere:
+    datasource:
+      names: order-0-w,order-1-w,order-0-r1,order-0-r2,order-1-r1,order-1-r2 #指定所有数据源的名字
+      #order_0库
+      order-0-w:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3306/gmall_order_0?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+      order-0-r1:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3307/gmall_order_0?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+      order-0-r2:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3308/gmall_order_0?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+
+      #order_1库
+      order-1-w:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3306/gmall_order_1?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+
+      order-1-r1:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3307/gmall_order_1?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+      order-1-r2:
+        type: com.zaxxer.hikari.HikariDataSource #数据源类型
+        url: jdbc:mysql://192.168.136.130:3308/gmall_order_1?useSSL=false
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
+
+    rules:
+      readwrite-splitting:  #配置读写分离规则
+        data-sources:
+          order_0_rwrules:   #给一套集群起个名
+            type: static
+            props:
+              write-data-source-name: order-0-w
+              read-data-source-names: order-0-r1,order-0-r2
+            load-balancer-name: read-random
+          order_1_rwrules: #给一套集群起个名
+            type: static
+            props:
+              write-data-source-name: order-1-w
+              read-data-source-names: order-1-r1,order-1-r2
+            load-balancer-name: read-random
+        load-balancers:
+          read-random:
+            type: ROUND_ROBIN #轮询负载均衡
+      #配置数据分片规则
+      sharding:
+        default-database-strategy:
+          standard:
+            sharding-column: user_id
+            shardingAlgorithmName: user-id-db-shard
+        tables:  #指定逻辑表规则
+          order_info:
+            actualDataNodes: order-$->{0..1}-w.order_info_$->{1..3}
+            tableStrategy:
+              standard:
+                shardingColumn: user_id  #告诉sharing如果插入或者查询数据。根据那一列去那张表
+                shardingAlgorithmName: user-id-table-shard
+            keyGenerateStrategy:
+              column: id
+              keyGeneratorName: orderinfo-id-snow
+          order_detail:
+            actualDataNodes: order-$->{0..1}-w.order_detail_$->{1..3}
+            tableStrategy:
+              standard:
+                shardingColumn: user_id
+                shardingAlgorithmName: user-id-detail-table-shard
+        #声明绑定表的关系
+        binding-tables:
+          - order_info
+          - order_detail
+        sharding-algorithms:
+          user-id-db-shard:
+            type: INLINE
+            props:
+              algorithm-expression: order-$->{user_id%2}-w
+          user-id-table-shard:
+            type: INLINE
+            props:
+              algorithm-expression: order_info_$->{user_id % 3 + 1}
+          user-id-detail-table-shard:
+            type: INLINE
+            props:
+              algorithm-expression: order_detail_$->{user_id % 3 + 1}
+        key-generators:
+          orderinfo-id-snow:
+            type: SNOWFLAKE
+    props:
+      sql-show: true
+      sql-simple: true
+  redis:
+    host: 192.168.136.130
+    password: Lfy123!@!
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+  rabbitmq:
+    host: 192.168.136.130
+    port: 5672
+    username: admin
+    password: admin
+    virtualHost: /
+    publisher-returns: true
+    #发送端确认；
+    publisher-confirm-type: correlated
+    #手动ack机制
+    listener:
+      type: simple
+      simple:
+        acknowledge-mode: manual  #手动确认模式。
+
+app:
+  props:
+    ware-url: http://localhost:14000

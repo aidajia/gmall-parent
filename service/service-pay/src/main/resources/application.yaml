@@ -1,0 +1,31 @@
+server:
+  port: 15000
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  rabbitmq:
+    host: 192.168.136.130
+    port: 5672
+    username: admin
+    password: admin
+    virtualHost: /
+    publisher-returns: true
+    #发送端确认；
+    publisher-confirm-type: correlated
+    #手动ack机制
+    listener:
+      type: simple
+      simple:
+        acknowledge-mode: manual  #手动确认模式。
+
+app:
+  pay:
+    alipay:
+      app_id: 2016092200568607
+      merchant_private_key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCq9iwGPNelF9PENLtjKjZapWZvIfg/ZYFMVXXd75izxRFp+GDv9euiFJewooAiBSzdy+3iLB/jRB7WLN3I4P7v3QA6nogFhYD/Zdj9zvZJzn6ZZFrzynwj1nHOSLoF4kqonVxuc4Xbofywc+fi8MBvBtPi4td31HVESime6TOhjtKA/ZWIMg7z/cHl2ELLt+wiDkOFx/g+LtmnjBraOd3uQ+t3HuuxQPYsfrYer9mYSAGX+L+UUFLrwPmDK+MYFpSlaaON9lltdQozFeOIyg6+dcDW6HS0Vda0D38R3MyMQ/2fcRt5YsqKOCdr8V3pr6PJDRLsm/QWPIqKDjsCdXF7AgMBAAECggEAUKH2taJwmv8X9Axi7Sx1ol8sZvIAofX/+7667sgYn4Es62woXEUCs9k+iiK6iFEkjh+mvOvOxmPUn3Ndz2a/FuaHOx6WTPRgmRSyOVMpujnYYASDGUTBNC3qUz7d7fSC/e/qLnXyBlrqUVb5YYHnYPY5bWNL+MqN3H2WD8sxfNqW9wxcLlbLsjjrWN+2nvssrF2f/+dNvyFjE4ngXZDSOR2OZyZMLRpZC4mtNREAIkj6eKvwixTlRe4X2rB6iugT03+wm7C5YE5rr8on0/kXNGv6HNDtaUhvwSoZCOf9PiQWwWmY1Sjv1+E47nJznkUH3uX5DWdy5ZWY1Du2W82mEQKBgQDsxloe+DI5KVJzKKV8v5XFvQJMFwkGdLfX4zUBo54R5KC9Z6C/VhMubeHN14y22yYmj0uKnZtJ5JohbK3O1RfbWGU7EjyZNiqdiD+DwnELy/sByG56LiGPM48to3kHluw2zl0cnrWbJIuVGAJ8tfVW/EUmM1kFnAHKUaAY/huuBQKBgQC419BPEU7hGLsyO9bt4OtGjLcwFgzdjvecGsws2LZ3mAI6ue7Qxw6npOH5VTcRrv5m43QRHDrSTzpXiwTeWaqST+uC4A+C8/V3dyiJKu9BeyyXhxrl6qahTMW8sVmydH7PogyjlD9SrBRsKqkC40Dd1jlOo9K9VuTYbBKtSv85fwKBgEaQ5xMLzYwTsKr5ljiTsMN6DVE4HEx8RL5mzMlsRhP3G6DXXaUothbEUOPUNe/ZaIldc5ogVsOzCeykQzi9cZrBwYnVaZIP/qtsi+Fs9dwaMvjZD3QCg6X2K9niOpP0evnqjv2Un3NZdPA+c59Pa4s9LC6yZvmxASeXJCvOr9kxAoGAaOi0Jewg5MjwlhY4alKZtjTvU69wJd+a0VK0R0/IYCA6Q7J7xKr1ulhumOCwnKzBXwwBOCTZjbvB1SXl4Xzqvpf1hxY8N4rW6rMKoq9nk7ahHG9l6NBBOpMkN3BBBHPx9U539e+R8Q4RmUKtIiJxEncfl26LkULcJ6lPAGPsb2kCgYAb3xlu0f4s/1eSCD+/B//0MicJ4Gn+xM57/MtUY/l3ygm14rzixg2Yh7yg18hgYYEfP8lcRN1rgL4nyRXoK1D/eKvCqubn9nDMu/csCNXPMPdTHd4J1I93Linc/eOtLdpMMzUd9NZQ576nsz1pXTBxiCcJGwD7cc6gQbsltq759Q==
+      alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyQQceVUChTJGtF/a8SXufhSxDTKporieTq9NO7yDZSpDlAX1zVPT/nf0KWAlxq1TYappWMIYtyrOABhJyn6flNP6vuSBiM5lYsepHvYrtRHqlFiJruEkiaCgEZBKL5aCfBHYj0oqgQn9MpNV/PEH4cBYAVaiI4+VX8CBUQfeEGjgN6OkpLULZ3X0JUkmSnVvCNJ1m3PD68IIlbOfEZXJUKCqmZhzprGR5VWswjxA+g87cMwvijL4gdkSy/daG62Bz5vApcmmMkuX1k1fMWP4ajZCASVw8HD+MSLRhd8We9F97gd8CW0TavzbdR+mTS5H4yEgO8F9HRAsbkhV9yu0yQIDAQAB
+      notify_url: http://2yv3x6up8z.51xd.pub/api/payment/notify/success
+      return_url: http://payment.gmall.com/pay/success.html
+      sign_type: RSA2
+      charset: utf-8
+      gatewayUrl: https://openapi.alipaydev.com/gateway.do

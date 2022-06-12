@@ -50,6 +50,7 @@ var auth = {
     },
 
     setUserInfo(userInfo) {
+        //自己放cookie ；  7天过期，放大作用域
         return $.cookie('userInfo', userInfo, {domain: 'gmall.com', expires: 7, path: '/'})
     },
 

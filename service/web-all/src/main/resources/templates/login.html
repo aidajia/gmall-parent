@@ -117,16 +117,9 @@
                 login.login(this.user).then(response => {
                     //	debugger
                     if (response.data.code == 200) {
-                        //  把token存在cookie中、也可以放在localStorage中
-						//	result.ok(map);
-						//	response 相当于Result
-						//	response.data 相当于 Result.ok();
-						//	response.data.data  data看做一个map 相当于 Result.ok(data);
-						//	response.data.map.token 相当于 result.ok(map)
-						//	map 中有token 同时还有 nickName
+						//response.data = Result {code:200,message:"成功",data: {"token":"","nickName":""} }
                         auth.setToken(response.data.data.token)
-						//	response.data.data 相当于返回来的map
-						//	JSON.stringify(response.data.data) 将map 数据变为json对象，存储到cookie 中
+
                         auth.setUserInfo(JSON.stringify(response.data.data))
 
 						//	输入日志：是否有 originUrl 回跳url！
